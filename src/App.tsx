@@ -3,24 +3,49 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import Players from "./pages/Players";
+import PlayerDetail from "./pages/PlayerDetail";
+import Analytics from "./pages/Analytics";
+import WarReadiness from "./pages/WarReadiness";
+import Tournaments from "./pages/Tournaments";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 2, staleTime: 30_000 } },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public landing — live Clash Royale API data */}
+            <Route path="/" element={<Index />} />
+
+            {/* Auth */}
+            <Route path="/login" element={<Auth />} />
+
+            {/* Internal dashboard */}
+            <Route path="/dashboard"     element={<Dashboard />} />
+            <Route path="/players"       element={<Players />} />
+            <Route path="/players/:id"   element={<PlayerDetail />} />
+            <Route path="/analytics"     element={<Analytics />} />
+            <Route path="/war-readiness" element={<WarReadiness />} />
+            <Route path="/tournaments"   element={<Tournaments />} />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
