@@ -31,6 +31,7 @@ import {
   Volume2,
   VolumeX,
   Music,
+  MessageSquare,
 } from 'lucide-react';
 
 import {
@@ -133,10 +134,9 @@ function Navbar({ memberCount }: { memberCount?: number }) {
 
   const navLinks = [
     { href: '#stats',       label: 'Stats'     },
+    { href: '#top5',        label: 'Hall of Fame 🏆'  },
     { href: '#roster',      label: 'Roster'    },
     { href: '#war',         label: 'War'       },
-    { href: '#leaderboard', label: 'Leaders'   },
-    { href: '#top5',        label: 'Top 5 🏆'  },
     { href: '#coaching',    label: 'Coaching'  },
   ];
 
@@ -169,6 +169,14 @@ function Navbar({ memberCount }: { memberCount?: number }) {
               {l.label}
             </a>
           ))}
+          <a
+            href="https://discord.gg/QuxsNvHpjh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="discord-btn inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors"
+          >
+            <MessageSquare className="h-4 w-4" /> Discord
+          </a>
         </nav>
 
         {/* Right side */}
@@ -216,6 +224,14 @@ function Navbar({ memberCount }: { memberCount?: number }) {
           >
             Dashboard →
           </Link>
+          <a
+            href="https://discord.gg/QuxsNvHpjh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="discord-btn inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors w-full"
+          >
+            <MessageSquare className="h-4 w-4" /> Discord
+          </a>
         </div>
       )}
     </header>
@@ -242,15 +258,50 @@ function HeroSection({
   return (
     <section
       id="top"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Animated background */}
-      <div className="absolute inset-0 arena-grid" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
+      {/* Legendary Arena background */}
+      <div
+        className="absolute inset-0 bg-cover bg-no-repeat"
+        style={{ backgroundImage: 'url(/legendary-arena.jpg)', backgroundPosition: 'center center', opacity: 0.45 }}
+      />
+      {/* Hexagon grid */}
+      <div className="absolute inset-0 hex-grid opacity-60" />
+      {/* Radial pulse */}
+      <div className="absolute inset-0 radial-pulse" />
+      {/* Rising gold particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[
+          { left:'4%',  size:'3px', dur:'9s',  delay:'0s',   drift:'8px'  },
+          { left:'12%', size:'2px', dur:'13s', delay:'2s',   drift:'-6px' },
+          { left:'22%', size:'4px', dur:'11s', delay:'1s',   drift:'12px' },
+          { left:'33%', size:'2px', dur:'15s', delay:'3.5s', drift:'-10px'},
+          { left:'45%', size:'3px', dur:'10s', delay:'0.5s', drift:'6px'  },
+          { left:'55%', size:'2px', dur:'14s', delay:'4s',   drift:'-8px' },
+          { left:'65%', size:'3px', dur:'12s', delay:'1.5s', drift:'10px' },
+          { left:'75%', size:'2px', dur:'9s',  delay:'2.5s', drift:'-5px' },
+          { left:'84%', size:'4px', dur:'16s', delay:'0.8s', drift:'7px'  },
+          { left:'93%', size:'2px', dur:'11s', delay:'3s',   drift:'-9px' },
+        ].map((p, i) => (
+          <div
+            key={i}
+            className="gold-particle"
+            style={{
+              left: p.left,
+              bottom: '-10px',
+              width: p.size,
+              height: p.size,
+              animationDuration: p.dur,
+              animationDelay: p.delay,
+              ['--drift' as string]: p.drift,
+            }}
+          />
+        ))}
+      </div>
+      {/* Bottom fade to page */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-      {/* Orb glows */}
-      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-secondary/10 blur-3xl" />
+
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
         {/* Badge */}
@@ -359,7 +410,7 @@ function LiveStatsSection({
 
   return (
     <section id="stats" className="py-20 px-4">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl fade-up">
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl font-bold mb-1">Live Clan Stats</h2>
@@ -379,8 +430,8 @@ function LiveStatsSection({
         {error && <ErrorBox message={`Could not load clan data: ${error.message}`} />}
 
         <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {stats.map(({ icon: Icon, label, value, format, color }) => (
-            <div key={label} className="stat-card flex flex-col items-center text-center gap-2 py-6">
+          {stats.map(({ icon: Icon, label, value, format, color }, idx) => (
+            <div key={label} className={`stat-card flex flex-col items-center text-center gap-2 py-6 fade-up ${idx === 0 ? 'fade-up-delay-1' : idx === 1 ? 'fade-up-delay-2' : idx === 2 ? 'fade-up-delay-3' : ''}`}>
               <Icon className={`h-6 w-6 ${color === 'trophy-shimmer' ? 'text-amber-400' : color}`} />
               {isLoading ? (
                 <Skeleton className="h-8 w-20" />
@@ -448,7 +499,7 @@ function RosterSection({
 
   return (
     <section id="roster" className="py-20 px-4">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl fade-up">
         <SectionHeading
           icon={Users}
           title="Clan Roster"
@@ -514,111 +565,55 @@ function RosterSection({
           <LiveBadge />
         </div>
 
-        {/* Table */}
-        <div className="stat-card overflow-hidden p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider w-10">#</th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    <button className="flex items-center gap-1" onClick={() => handleSort('name')}>
-                      Player <SortIcon col="name" />
-                    </button>
-                  </th>
-                  <th className="py-3 px-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">Role</th>
-                  <th className="py-3 px-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    <button className="inline-flex items-center gap-1 ml-auto" onClick={() => handleSort('trophies')}>
-                      <SortIcon col="trophies" /> Trophies
-                    </button>
-                  </th>
-                  <th className="py-3 px-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">Best</th>
-                  <th className="py-3 px-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    <button className="inline-flex items-center gap-1 ml-auto" onClick={() => handleSort('donations')}>
-                      <SortIcon col="donations" /> Donated
-                    </button>
-                  </th>
-                  <th className="py-3 px-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden md:table-cell">Last Online</th>
-                  <th className="py-3 px-4 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden lg:table-cell">Arena</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading
-                  ? Array.from({ length: 10 }).map((_, i) => (
-                      <tr key={i} className="border-b border-border/50">
-                        {Array.from({ length: 8 }).map((_, j) => (
-                          <td key={j} className="py-3 px-4">
-                            <Skeleton className="h-4 w-full" />
-                          </td>
-                        ))}
-                      </tr>
-                    ))
-                  : sorted.map((m, idx) => (
-                      <tr
-                        key={m.tag}
-                        className="border-b border-border/40 hover:bg-muted/40 transition-colors"
-                      >
-                        {/* Rank */}
-                        <td className="py-3 px-4">
-                          <span
-                            className={`font-display font-bold text-xs ${
-                              idx === 0 ? 'text-amber-400' :
-                              idx === 1 ? 'text-slate-400' :
-                              idx === 2 ? 'text-amber-700' :
-                              'text-muted-foreground'
-                            }`}
-                          >
-                            {idx + 1}
-                          </span>
-                        </td>
-                        {/* Name */}
-                        <td className="py-3 px-4">
-                          <div className="font-medium">{m.name}</div>
-                          <div className="text-[11px] text-muted-foreground">{m.tag}</div>
-                        </td>
-                        {/* Role */}
-                        <td className="py-3 px-4 text-center">
-                          <RoleBadge role={m.role} />
-                        </td>
-                        {/* Trophies */}
-                        <td className="py-3 px-4 text-right">
-                          <span className="font-display font-bold trophy-shimmer">
-                            {m.trophies?.toLocaleString() ?? '—'}
-                          </span>
-                        </td>
-                        {/* Best */}
-                        <td className="py-3 px-4 text-right text-muted-foreground hidden sm:table-cell">
-                          {m.bestTrophies?.toLocaleString() ?? '—'}
-                        </td>
-                        {/* Donations */}
-                        <td className="py-3 px-4 text-right">
-                          <span className="font-display font-bold text-green-400">
-                            {m.donations?.toLocaleString() ?? '—'}
-                          </span>
-                          <span className="text-[11px] text-muted-foreground block">
-                            recv {m.donationsReceived?.toLocaleString() ?? '—'}
-                          </span>
-                        </td>
-                        {/* Last online */}
-                        <td className="py-3 px-4 text-center text-muted-foreground text-xs hidden md:table-cell">
-                          {formatLastSeen(m.lastSeen)}
-                        </td>
-                        {/* Arena */}
-                        <td className="py-3 px-4 text-center text-xs text-muted-foreground hidden lg:table-cell">
-                          {m.arena?.name ?? '—'}
-                        </td>
-                      </tr>
-                    ))}
-              </tbody>
-            </table>
-
-            {!isLoading && sorted.length === 0 && (
-              <div className="py-16 text-center text-muted-foreground">
-                No members match your filters.
-              </div>
-            )}
+        {/* Card Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-36 w-full" />
+            ))}
           </div>
-        </div>
+        ) : sorted.length === 0 ? (
+          <div className="py-16 text-center text-muted-foreground">
+            No members match your filters.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {sorted.map((m, idx) => {
+              const trophyBorder = (m.trophies ?? 0) >= 7000 ? 'border-amber-500/50 shadow-[0_0_12px_hsl(45,93%,58%,0.2)]' :
+                                   (m.trophies ?? 0) >= 5000 ? 'border-primary/50' :
+                                   (m.trophies ?? 0) >= 3000 ? 'border-red-500/40' : 'border-border';
+              return (
+                <div key={m.tag} className={`stat-card border ${trophyBorder} flex flex-col gap-2`}>
+                  <div className="flex items-center gap-3">
+                    {/* Rank + avatar placeholder */}
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-display font-black text-sm border-2 ${trophyBorder} bg-muted`}>
+                      {idx + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-display font-bold text-sm truncate">{m.name}</div>
+                      <div className="text-[11px] text-muted-foreground">{m.tag}</div>
+                    </div>
+                    <RoleBadge role={m.role} />
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1 border-t border-border/50">
+                    <div>
+                      <div className="trophy-shimmer font-display font-bold">{(m.trophies ?? 0).toLocaleString()}</div>
+                      <div className="text-muted-foreground">Trophies</div>
+                    </div>
+                    <div>
+                      <div className="text-green-400 font-display font-bold">{(m.donations ?? 0).toLocaleString()}</div>
+                      <div className="text-muted-foreground">Donated</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground font-medium">{formatLastSeen(m.lastSeen)}</div>
+                      <div className="text-muted-foreground">Online</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -649,7 +644,7 @@ function WarSection({
 
   return (
     <section id="war" className="py-20 px-4">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl fade-up">
         <SectionHeading
           icon={Swords}
           title="War Performance"
@@ -684,40 +679,55 @@ function WarSection({
               </div>
             ) : currentRace?.clans ? (
               <div className="space-y-2">
-                {[...currentRace.clans]
-                  .sort((a, b) => b.fame - a.fame)
-                  .map((clan, idx) => {
+                {(() => {
+                  const sortedClans = [...currentRace.clans].sort((a, b) => b.fame - a.fame);
+                  const maxFame = Math.max(...sortedClans.map(c => c.fame), 1);
+                  return sortedClans.map((clan, idx) => {
                     const isUs = clan.tag === ourTag;
                     return (
                       <div
                         key={clan.tag}
-                        className={`flex items-center gap-3 rounded-lg p-3 ${
+                        className={`rounded-lg p-3 ${
                           isUs
                             ? 'bg-primary/10 border border-primary/30'
                             : 'bg-muted/30'
                         }`}
                       >
-                        <span className={`font-display font-bold w-5 text-center ${
-                          idx === 0 ? 'text-amber-400' : 'text-muted-foreground'
-                        }`}>
-                          {idx + 1}
-                        </span>
-                        <span className={`flex-1 font-medium truncate ${isUs ? 'text-primary' : ''}`}>
-                          {clan.name}
-                          {isUs && <span className="ml-2 text-xs text-primary/70">(us)</span>}
-                        </span>
-                        <div className="text-right">
-                          <div className="font-display font-bold text-accent text-sm">
-                            {clan.fame.toLocaleString()}
+                        <div className="flex items-center gap-3">
+                          <span className={`font-display font-bold w-5 text-center ${
+                            idx === 0 ? 'text-amber-400' : 'text-muted-foreground'
+                          }`}>
+                            {idx + 1}
+                          </span>
+                          <span className={`flex-1 font-medium truncate ${isUs ? 'text-primary' : ''}`}>
+                            {clan.name}
+                            {isUs && <span className="ml-2 text-xs text-primary/70">(us)</span>}
+                          </span>
+                          <div className="text-right">
+                            <div className="font-display font-bold text-accent text-sm">
+                              {clan.fame.toLocaleString()}
+                            </div>
+                            <div className="text-[10px] text-muted-foreground">fame</div>
                           </div>
-                          <div className="text-[10px] text-muted-foreground">fame</div>
+                          {clan.finishTime && (
+                            <div className="h-2 w-2 rounded-full bg-green-400" title="Finished" />
+                          )}
                         </div>
-                        {clan.finishTime && (
-                          <div className="h-2 w-2 rounded-full bg-green-400" title="Finished" />
-                        )}
+                        <div className="mt-1.5 h-1.5 rounded-full bg-muted overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-700 ${
+                              idx === 0 ? 'bg-gradient-to-r from-amber-400 to-amber-500' :
+                              idx === 1 ? 'bg-gradient-to-r from-slate-400 to-slate-500' :
+                              idx === 2 ? 'bg-gradient-to-r from-amber-700 to-amber-800' :
+                              'bg-primary/60'
+                            }`}
+                            style={{ width: `${Math.round((clan.fame / maxFame) * 100)}%` }}
+                          />
+                        </div>
                       </div>
                     );
-                  })}
+                  });
+                })()}
               </div>
             ) : (
               <p className="text-muted-foreground text-sm py-4">No active River Race data.</p>
@@ -962,60 +972,42 @@ function LeaderboardSection({
 
 const COACHING_PACKAGES = [
   {
-    name: 'Starter',
-    price: '$29',
-    period: '/session',
+    name: 'Clan Member',
+    price: 'Free',
+    period: '',
+    badge: 'Members Only',
+    highlight: true,
+    icon: Crown,
+    color: 'text-amber-400',
+    bgColor: 'bg-amber-500/10 border-amber-500/20',
+    features: [
+      'Free 1-on-1 coaching sessions',
+      'Deck building & review',
+      'Battle replay analysis',
+      'War strategy coaching',
+      'Meta analysis & counters',
+      'Private Discord access',
+    ],
+    cta: 'Book Free Session',
+  },
+  {
+    name: 'Non-Clan',
+    price: '$10',
+    period: '/hour',
     badge: '',
     highlight: false,
     icon: BookOpen,
     color: 'text-blue-400',
     bgColor: 'bg-blue-500/10 border-blue-500/20',
     features: [
-      '1-hour coaching session',
+      '$10 per hour of coaching',
       'Deck building review',
       'Battle replay analysis',
       'Basic strategy tips',
       'Post-session recap',
+      'Join the clan to get it free!',
     ],
-    cta: 'Book Starter',
-  },
-  {
-    name: 'Pro',
-    price: '$79',
-    period: '/3 sessions',
-    badge: 'Most Popular',
-    highlight: true,
-    icon: Zap,
-    color: 'text-primary',
-    bgColor: 'bg-primary/10 border-primary/40',
-    features: [
-      '3 × 1-hour sessions',
-      'Full deck portfolio review',
-      'War strategy coaching',
-      'Meta analysis & counters',
-      'Private Discord access',
-      'Between-session Q&A',
-    ],
-    cta: 'Book Pro',
-  },
-  {
-    name: 'Elite',
-    price: '$149',
-    period: '/month',
-    badge: 'Best Value',
-    highlight: false,
-    icon: Crown,
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-500/10 border-amber-500/20',
-    features: [
-      'Weekly coaching (4 sessions)',
-      'Unlimited deck feedback',
-      'Custom war game plan',
-      'Tournament prep',
-      'Priority Discord support',
-      'Monthly progress report',
-    ],
-    cta: 'Book Elite',
+    cta: 'Book Session',
   },
 ];
 
@@ -1033,66 +1025,67 @@ function CoachingSection() {
 
   return (
     <section id="coaching" className="py-20 px-4">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl fade-up">
         <SectionHeading
           icon={Star}
           title="Coaching Services"
           sub="Level up your gameplay with personalized 1-on-1 coaching from CeepzRoyale's top players"
         />
 
-        {/* Packages */}
-        <div className="grid gap-6 md:grid-cols-3 mb-20">
-          {COACHING_PACKAGES.map((pkg) => {
-            const Icon = pkg.icon;
-            return (
-              <div
-                key={pkg.name}
-                className={`relative stat-card flex flex-col ${
-                  pkg.highlight ? 'ring-2 ring-primary shadow-[0_0_40px_hsl(217,91%,60%,0.2)]' : ''
-                }`}
-              >
-                {pkg.badge && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-primary px-4 py-0.5 text-xs font-bold text-white">
-                    {pkg.badge}
-                  </div>
-                )}
-
-                <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl border mb-4 ${pkg.bgColor}`}>
-                  <Icon className={`h-6 w-6 ${pkg.color}`} />
-                </div>
-
-                <h3 className="font-display text-xl font-bold mb-1">{pkg.name}</h3>
-                <div className="flex items-baseline gap-1 mb-4">
-                  <span className="font-display text-4xl font-black text-gradient">{pkg.price}</span>
-                  <span className="text-muted-foreground text-sm">{pkg.period}</span>
-                </div>
-
-                <ul className="flex-1 space-y-2.5 mb-8">
-                  {pkg.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm">
-                      <Heart className="h-4 w-4 shrink-0 text-primary mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#book"
-                  className={`w-full text-center rounded-xl py-3 font-display font-bold text-sm transition-all duration-300 ${
-                    pkg.highlight
-                      ? 'bg-gradient-primary text-white shadow-[0_0_20px_hsl(217,91%,60%,0.3)] hover:shadow-[0_0_30px_hsl(217,91%,60%,0.5)]'
-                      : 'border border-border hover:border-primary/40 hover:bg-primary/10 text-foreground'
+        <div className="grid gap-12 lg:grid-cols-2 items-start">
+          {/* Packages */}
+          <div className="grid gap-6">
+            {COACHING_PACKAGES.map((pkg, pkgIdx) => {
+              const Icon = pkg.icon;
+              return (
+                <div
+                  key={pkg.name}
+                  className={`relative stat-card flex flex-col fade-up ${pkgIdx === 0 ? 'fade-up-delay-1' : 'fade-up-delay-2'} ${
+                    pkg.highlight ? 'ring-2 ring-primary shadow-[0_0_40px_hsl(217,91%,60%,0.2)]' : ''
                   }`}
                 >
-                  {pkg.cta}
-                </a>
-              </div>
-            );
-          })}
-        </div>
+                  {pkg.badge && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-primary px-4 py-0.5 text-xs font-bold text-white">
+                      {pkg.badge}
+                    </div>
+                  )}
 
-        {/* Booking form */}
-        <div id="book" className="mx-auto max-w-2xl">
+                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl border mb-4 ${pkg.bgColor}`}>
+                    <Icon className={`h-6 w-6 ${pkg.color}`} />
+                  </div>
+
+                  <h3 className="font-display text-xl font-bold mb-1">{pkg.name}</h3>
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <span className="font-display text-4xl font-black text-gradient">{pkg.price}</span>
+                    <span className="text-muted-foreground text-sm">{pkg.period}</span>
+                  </div>
+
+                  <ul className="flex-1 space-y-2.5 mb-8">
+                    {pkg.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm">
+                        <Heart className="h-4 w-4 shrink-0 text-primary mt-0.5" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#book"
+                    className={`w-full text-center rounded-xl py-3 font-display font-bold text-sm transition-all duration-300 ${
+                      pkg.highlight
+                        ? 'bg-gradient-primary text-white shadow-[0_0_20px_hsl(217,91%,60%,0.3)] hover:shadow-[0_0_30px_hsl(217,91%,60%,0.5)]'
+                        : 'border border-border hover:border-primary/40 hover:bg-primary/10 text-foreground'
+                    }`}
+                  >
+                    {pkg.cta}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Booking form */}
+          <div id="book">
           <div className="glass rounded-2xl p-8">
             <h3 className="font-display text-2xl font-bold text-gradient mb-2">Book a Session</h3>
             <p className="text-muted-foreground text-sm mb-6">
@@ -1138,11 +1131,10 @@ function CoachingSection() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Package</label>
+                  <label className="block text-sm font-medium mb-1.5">Membership</label>
                   <select className="w-full rounded-lg border border-border bg-muted px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
-                    <option value="starter">Starter — $29 / session</option>
-                    <option value="pro">Pro — $79 / 3 sessions</option>
-                    <option value="elite">Elite — $149 / month</option>
+                    <option value="member">Clan Member — Free</option>
+                    <option value="non-member">Non-Clan — $10 / hour</option>
                   </select>
                 </div>
 
@@ -1164,7 +1156,8 @@ function CoachingSection() {
               </form>
             )}
           </div>
-        </div>
+          </div>{/* end booking form column */}
+        </div>{/* end grid gap-12 */}
       </div>
     </section>
   );
@@ -1193,7 +1186,7 @@ function Top5Section({
   const [isVisible,     setIsVisible]     = useState(false);
   const [musicEnabled,  setMusicEnabled]  = useState(true);
 
-  const top5 = [...(members ?? [])].sort((a, b) => (b.trophies ?? 0) - (a.trophies ?? 0)).slice(0, 5);
+  const top5 = [...(members ?? [])].sort((a, b) => (b.trophies ?? 0) - (a.trophies ?? 0)).slice(0, 3);
 
   // Create audio element once
   useEffect(() => {
@@ -1238,26 +1231,90 @@ function Top5Section({
     <section
       id="top5"
       ref={sectionRef}
-      className={`py-20 px-4 transition-all duration-500 ${
-        isPlaying
-          ? 'bg-gradient-to-b from-amber-500/5 via-background to-background'
-          : ''
-      }`}
+      className="relative py-20 px-4 overflow-hidden"
     >
-      <div className="mx-auto max-w-3xl">
+      {/* Base background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(258,30%,6%)] to-background pointer-events-none" />
+
+      {/* Golden stadium light radiating from top center */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'conic-gradient(from 270deg at 50% -20%, transparent 60deg, hsl(43,96%,56%,0.22) 85deg, hsl(48,100%,72%,0.35) 90deg, hsl(43,96%,56%,0.22) 95deg, transparent 120deg)',
+      }} />
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'conic-gradient(from 270deg at 50% -20%, transparent 50deg, hsl(43,96%,56%,0.08) 80deg, hsl(48,100%,65%,0.12) 90deg, hsl(43,96%,56%,0.08) 100deg, transparent 130deg)',
+      }} />
+      {/* Stadium floor glow beneath #1 */}
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-16 w-80 h-24 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, hsl(43,96%,56%,0.3) 0%, hsl(43,96%,56%,0.1) 50%, transparent 75%)', filter: 'blur(12px)' }} />
+
+      {/* Dark vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'radial-gradient(ellipse 80% 75% at 50% 50%, transparent 35%, hsl(258,30%,3%,0.75) 100%)',
+      }} />
+
+      {/* Confetti */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[
+          { left:'3%',  w:8,  h:5,  dur:'4.5s', delay:'0s',   color:'hsl(43,96%,60%)',  spin:'520deg',  flip:'-1' },
+          { left:'8%',  w:6,  h:9,  dur:'5.5s', delay:'0.6s', color:'hsl(278,80%,65%)', spin:'380deg',  flip:'1'  },
+          { left:'13%', w:10, h:6,  dur:'4.0s', delay:'1.2s', color:'hsl(0,90%,60%)',   spin:'600deg',  flip:'-1' },
+          { left:'19%', w:7,  h:7,  dur:'6.0s', delay:'0.3s', color:'hsl(195,100%,65%)',spin:'290deg',  flip:'1'  },
+          { left:'25%', w:9,  h:5,  dur:'4.8s', delay:'1.8s', color:'hsl(43,96%,70%)',  spin:'450deg',  flip:'-1' },
+          { left:'31%', w:6,  h:10, dur:'5.2s', delay:'0.9s', color:'hsl(120,70%,55%)', spin:'540deg',  flip:'1'  },
+          { left:'37%', w:8,  h:6,  dur:'3.8s', delay:'2.4s', color:'hsl(278,80%,70%)', spin:'360deg',  flip:'-1' },
+          { left:'43%', w:5,  h:8,  dur:'5.8s', delay:'0.1s', color:'hsl(0,90%,65%)',   spin:'480deg',  flip:'1'  },
+          { left:'49%', w:10, h:5,  dur:'4.2s', delay:'1.5s', color:'hsl(43,96%,60%)',  spin:'620deg',  flip:'-1' },
+          { left:'55%', w:7,  h:9,  dur:'5.0s', delay:'0.7s', color:'hsl(195,100%,60%)',spin:'310deg',  flip:'1'  },
+          { left:'61%', w:6,  h:6,  dur:'4.6s', delay:'2.1s', color:'hsl(120,70%,60%)', spin:'560deg',  flip:'-1' },
+          { left:'67%', w:9,  h:5,  dur:'3.9s', delay:'0.4s', color:'hsl(278,80%,65%)', spin:'430deg',  flip:'1'  },
+          { left:'73%', w:5,  h:10, dur:'5.4s', delay:'1.1s', color:'hsl(0,90%,60%)',   spin:'500deg',  flip:'-1' },
+          { left:'79%', w:8,  h:6,  dur:'4.3s', delay:'2.8s', color:'hsl(43,96%,65%)',  spin:'350deg',  flip:'1'  },
+          { left:'85%', w:6,  h:8,  dur:'5.7s', delay:'0.5s', color:'hsl(195,100%,65%)',spin:'580deg',  flip:'-1' },
+          { left:'91%', w:9,  h:5,  dur:'4.1s', delay:'1.9s', color:'hsl(120,70%,55%)', spin:'410deg',  flip:'1'  },
+          { left:'96%', w:7,  h:7,  dur:'5.3s', delay:'0.8s', color:'hsl(278,80%,60%)', spin:'470deg',  flip:'-1' },
+          { left:'6%',  w:5,  h:6,  dur:'6.2s', delay:'3.0s', color:'hsl(43,96%,55%)',  spin:'340deg',  flip:'1'  },
+          { left:'22%', w:8,  h:5,  dur:'4.7s', delay:'2.2s', color:'hsl(0,90%,65%)',   spin:'590deg',  flip:'-1' },
+          { left:'46%', w:6,  h:9,  dur:'5.1s', delay:'3.5s', color:'hsl(195,100%,70%)',spin:'420deg',  flip:'1'  },
+          { left:'58%', w:10, h:6,  dur:'3.7s', delay:'1.3s', color:'hsl(120,70%,60%)', spin:'510deg',  flip:'-1' },
+          { left:'70%', w:7,  h:8,  dur:'4.9s', delay:'2.6s', color:'hsl(43,96%,68%)',  spin:'370deg',  flip:'1'  },
+          { left:'82%', w:5,  h:5,  dur:'5.6s', delay:'0.2s', color:'hsl(278,80%,68%)', spin:'630deg',  flip:'-1' },
+          { left:'16%', w:9,  h:6,  dur:'4.4s', delay:'4.0s', color:'hsl(0,90%,62%)',   spin:'460deg',  flip:'1'  },
+          { left:'88%', w:6,  h:8,  dur:'6.5s', delay:'1.6s', color:'hsl(195,100%,68%)',spin:'390deg',  flip:'-1' },
+        ].map((c, i) => (
+          <div key={i} className="confetti-piece" style={{
+            left: c.left,
+            width: `${c.w}px`,
+            height: `${c.h}px`,
+            background: c.color,
+            borderRadius: i % 4 === 0 ? '50%' : '2px',
+            animationDuration: c.dur,
+            animationDelay: c.delay,
+            ['--spin' as string]: c.spin,
+            ['--flip' as string]: c.flip,
+          }} />
+        ))}
+      </div>
+
+      {/* Top gold sweep line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/80 to-transparent" />
+      {/* Bottom gold sweep line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+
+
+      <div className="relative mx-auto max-w-3xl fade-up">
 
         {/* Heading */}
         <div className="mb-8 text-center relative">
           <div className={`inline-flex items-center justify-center h-14 w-14 rounded-2xl mb-4 transition-all duration-300 ${
             isPlaying
-              ? 'bg-amber-500/20 border border-amber-500/40 shadow-[0_0_24px_hsl(45,93%,58%,0.4)]'
-              : 'bg-primary/15 border border-primary/25'
+              ? 'bg-amber-500/20 border border-amber-400/50 shadow-[0_0_30px_hsl(43,96%,56%,0.5)]'
+              : 'bg-primary/15 border border-primary/30 shadow-[0_0_20px_hsl(43,96%,56%,0.2)]'
           }`}>
-            <Crown className={`h-7 w-7 transition-colors ${isPlaying ? 'text-amber-400' : 'text-primary'}`} />
+            <Crown className="h-7 w-7 text-primary" />
           </div>
 
           <h2 className="font-display text-3xl md:text-4xl font-bold text-gradient-gold mb-2">
-            Top 5 · Hall of Fame
+            Hall of Fame
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
             The clan's elite · ranked by trophies
@@ -1298,59 +1355,90 @@ function Top5Section({
           </div>
         )}
 
-        {/* Cards */}
+        {/* Podium */}
         {isLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="h-20 w-full" />
-            ))}
+          <div className="flex items-end justify-center gap-4">
+            <Skeleton className="h-52 w-1/3 rounded-t-2xl" />
+            <Skeleton className="h-64 w-1/3 rounded-t-2xl" />
+            <Skeleton className="h-40 w-1/3 rounded-t-2xl" />
+          </div>
+        ) : top5.length === 0 ? (
+          <div className="py-16 text-center text-muted-foreground text-sm">
+            No member data available yet.
           </div>
         ) : (
-          <div className="space-y-3">
-            {top5.map((m, i) => (
-              <div
-                key={m.tag}
-                className={`relative flex items-center gap-4 rounded-xl px-5 py-4 transition-all duration-300 ${
-                  isPlaying
-                    ? 'border border-amber-500/20 bg-card shadow-[0_0_16px_hsl(45,93%,58%,0.08)]'
-                    : 'border border-border bg-card'
-                } ${i === 0 && isPlaying ? 'ring-1 ring-amber-400/30' : ''}`}
-              >
-                {/* Rank */}
-                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl font-display font-black text-sm ${TOP5_RANK_STYLE[i]}`}>
-                  {MEDAL[i]}
-                </div>
+          <>
+            {/* ── Top 3 podium ── */}
+            <div className="flex items-end justify-center gap-3 mb-3">
 
-                {/* Name + role */}
-                <div className="flex-1 min-w-0">
-                  <div className="font-display font-bold truncate">{m.name}</div>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <RoleBadge role={m.role} />
-                    <span className="text-[11px] text-muted-foreground">{m.tag}</span>
+              {/* 2nd place */}
+              <div className="flex flex-col items-center flex-1">
+                <div className="w-full rounded-2xl border border-slate-400/30 bg-gradient-to-b from-slate-600/20 to-slate-800/20 px-3 py-4 mb-2 text-center shadow-[0_0_25px_hsl(215,20%,55%,0.2)] backdrop-blur-sm">
+                  <div className="font-display text-3xl mb-1">🥈</div>
+                  <div className="font-display font-bold text-sm truncate text-slate-200 mb-1">
+                    {top5[1]?.name ?? '—'}
                   </div>
-                </div>
-
-                {/* Trophies */}
-                <div className="text-right shrink-0">
-                  <div className="flex items-center gap-1.5 trophy-shimmer justify-end">
-                    <Trophy className="h-4 w-4" />
-                    <span className="font-display font-bold text-lg">
-                      {m.trophies?.toLocaleString() ?? '—'}
+                  <div className="flex items-center justify-center gap-1 mb-1">
+                    <Trophy className="h-3.5 w-3.5 text-slate-300" />
+                    <span className="font-display text-sm font-bold text-slate-200">
+                      {top5[1]?.trophies?.toLocaleString() ?? '—'}
                     </span>
                   </div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">
-                    Best: {m.bestTrophies?.toLocaleString() ?? '—'}
-                  </div>
+                  <RoleBadge role={top5[1]?.role ?? 'member'} />
+                </div>
+                <div className="w-full h-24 rounded-t-xl flex items-center justify-center bg-gradient-to-t from-slate-700/40 to-slate-500/20 border border-slate-400/30 shadow-[0_0_20px_hsl(215,20%,55%,0.25)]">
+                  <span className="font-display text-4xl font-black text-slate-300 drop-shadow-[0_0_10px_hsl(215,20%,80%,0.5)]">2</span>
                 </div>
               </div>
-            ))}
 
-            {top5.length === 0 && (
-              <div className="py-12 text-center text-muted-foreground text-sm">
-                No member data available yet.
+              {/* 1st place — tallest + most epic */}
+              <div className="flex flex-col items-center flex-1 -mt-6">
+                <Crown className="h-9 w-9 text-amber-400 crown-bounce mb-1 drop-shadow-[0_0_12px_hsl(43,96%,56%,0.9)]" />
+                <div className="relative w-full mb-2">
+                  <div className="relative w-full rounded-2xl border border-amber-400/50 bg-gradient-to-b from-amber-900/30 to-yellow-950/20 px-3 py-5 text-center gold-pulse backdrop-blur-sm">
+                    <div className="font-display text-3xl mb-1">🥇</div>
+                    <div className="font-display font-bold text-base truncate trophy-shimmer mb-1">
+                      {top5[0]?.name ?? '—'}
+                    </div>
+                    <div className="flex items-center justify-center gap-1.5 mb-1">
+                      <Trophy className="h-4 w-4 text-amber-400" />
+                      <span className="font-display text-lg font-black trophy-shimmer">
+                        {top5[0]?.trophies?.toLocaleString() ?? '—'}
+                      </span>
+                    </div>
+                    <RoleBadge role={top5[0]?.role ?? 'member'} />
+                  </div>
+                </div>
+                <div className="w-full h-36 rounded-t-xl flex items-center justify-center bg-gradient-to-t from-amber-900/50 to-amber-500/20 border border-amber-400/40 shadow-[0_0_40px_hsl(43,96%,56%,0.4)]">
+                  <span className="font-display text-6xl font-black trophy-shimmer drop-shadow-[0_0_16px_hsl(43,96%,56%,0.8)]">1</span>
+                </div>
               </div>
-            )}
-          </div>
+
+              {/* 3rd place */}
+              <div className="flex flex-col items-center flex-1">
+                <div className="w-full rounded-2xl border border-amber-700/30 bg-gradient-to-b from-amber-900/20 to-orange-950/20 px-3 py-4 mb-2 text-center shadow-[0_0_20px_hsl(30,80%,40%,0.2)] backdrop-blur-sm">
+                  <div className="font-display text-3xl mb-1">🥉</div>
+                  <div className="font-display font-bold text-sm truncate text-amber-500 mb-1">
+                    {top5[2]?.name ?? '—'}
+                  </div>
+                  <div className="flex items-center justify-center gap-1 mb-1">
+                    <Trophy className="h-3.5 w-3.5 text-amber-600" />
+                    <span className="font-display text-sm font-bold text-amber-500">
+                      {top5[2]?.trophies?.toLocaleString() ?? '—'}
+                    </span>
+                  </div>
+                  <RoleBadge role={top5[2]?.role ?? 'member'} />
+                </div>
+                <div className="w-full h-14 rounded-t-xl flex items-center justify-center bg-gradient-to-t from-amber-900/40 to-amber-700/20 border border-amber-700/35 shadow-[0_0_18px_hsl(30,80%,40%,0.25)]">
+                  <span className="font-display text-3xl font-black text-amber-600 drop-shadow-[0_0_8px_hsl(30,80%,50%,0.6)]">3</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Podium base plate */}
+            <div className="neon-sweep-line mb-2" />
+
+          </>
         )}
       </div>
     </section>
@@ -1383,7 +1471,6 @@ function Footer({ clanTag }: { clanTag: string }) {
                 ['#stats',       'Clan Stats'],
                 ['#roster',      'Roster'],
                 ['#war',         'War Performance'],
-                ['#leaderboard', 'Leaderboard'],
                 ['#top5',        'Top 5'],
                 ['#coaching',    'Coaching'],
               ].map(([href, label]) => (
@@ -1474,6 +1561,11 @@ const Index = () => {
         lastUpdated={lastUpdated}
       />
 
+      <Top5Section
+        members={members}
+        isLoading={clanLoading || membersLoading}
+      />
+
       <RosterSection
         members={members}
         isLoading={clanLoading || membersLoading}
@@ -1488,19 +1580,19 @@ const Index = () => {
         errorCurrent={raceError}
       />
 
-      <LeaderboardSection
-        members={members}
-        isLoading={clanLoading || membersLoading}
-      />
-
-      <Top5Section
-        members={members}
-        isLoading={clanLoading || membersLoading}
-      />
-
       <CoachingSection />
 
       <Footer clanTag={CLAN_TAG_DISPLAY} />
+
+      {/* Sticky mobile CTA */}
+      <div className="fixed bottom-4 right-4 z-50 md:hidden">
+        <a
+          href="#coaching"
+          className="inline-flex items-center gap-2 rounded-2xl bg-gradient-primary px-5 py-3 font-display font-bold text-white text-sm shadow-[0_0_20px_hsl(217,91%,60%,0.5)] hover:shadow-[0_0_30px_hsl(217,91%,60%,0.7)] transition-all"
+        >
+          <Crown className="h-4 w-4" /> Join Clan
+        </a>
+      </div>
     </div>
   );
 };

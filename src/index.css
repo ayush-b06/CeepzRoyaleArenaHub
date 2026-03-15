@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,67 +11,67 @@
 
 @layer base {
   :root {
-    /* Core brand colors - electric gaming aesthetic */
-    --background: 240 20% 6%;
-    --foreground: 210 40% 98%;
+    /* Legendary Arena — deep purple/indigo base, gold accents */
+    --background: 258 28% 6%;
+    --foreground: 48 60% 96%;
 
-    --card: 240 20% 9%;
-    --card-foreground: 210 40% 98%;
+    --card: 258 25% 10%;
+    --card-foreground: 48 60% 96%;
 
-    --popover: 240 20% 9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 258 25% 10%;
+    --popover-foreground: 48 60% 96%;
 
-    /* Primary - Royal Electric Blue */
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 11%;
+    /* Primary — Legendary Gold */
+    --primary: 43 96% 56%;
+    --primary-foreground: 258 28% 8%;
 
-    /* Secondary - Deep Purple */
-    --secondary: 263 70% 50%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary — Royal Purple */
+    --secondary: 278 72% 52%;
+    --secondary-foreground: 48 60% 96%;
 
-    /* Muted - Subtle dark */
-    --muted: 240 15% 15%;
-    --muted-foreground: 215 20% 65%;
+    /* Muted */
+    --muted: 258 20% 16%;
+    --muted-foreground: 258 15% 62%;
 
-    /* Accent - Victory Gold */
-    --accent: 45 93% 58%;
-    --accent-foreground: 222 47% 11%;
+    /* Accent — Electric Cyan/Lightning */
+    --accent: 192 100% 58%;
+    --accent-foreground: 258 28% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 48 60% 96%;
 
-    --border: 240 15% 20%;
-    --input: 240 15% 15%;
-    --ring: 217 91% 60%;
+    --border: 258 20% 22%;
+    --input: 258 20% 16%;
+    --ring: 43 96% 56%;
 
     --radius: 0.75rem;
 
     /* Custom gaming tokens */
     --success: 142 76% 45%;
-    --success-foreground: 210 40% 98%;
+    --success-foreground: 48 60% 96%;
     --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 11%;
+    --warning-foreground: 258 28% 8%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(217, 91%, 60%) 0%, hsl(263, 70%, 50%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(30, 90%, 50%) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(240, 20%, 9%) 0%, hsl(240, 20%, 4%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(217, 91%, 60%, 0.15) 0%, transparent 70%);
+    --gradient-primary: linear-gradient(135deg, hsl(48, 100%, 72%) 0%, hsl(38, 95%, 52%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(48, 100%, 72%) 0%, hsl(38, 95%, 52%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(258, 25%, 10%) 0%, hsl(258, 28%, 5%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(43, 96%, 56%, 0.18) 0%, transparent 70%);
 
     /* Shadows */
-    --shadow-glow: 0 0 30px hsl(217, 91%, 60%, 0.3);
-    --shadow-gold: 0 0 20px hsl(45, 93%, 58%, 0.4);
-    --shadow-card: 0 8px 32px hsl(0, 0%, 0%, 0.4);
+    --shadow-glow: 0 0 30px hsl(43, 96%, 56%, 0.35);
+    --shadow-gold: 0 0 20px hsl(43, 96%, 56%, 0.5);
+    --shadow-card: 0 8px 32px hsl(0, 0%, 0%, 0.5);
 
     /* Sidebar */
-    --sidebar-background: 240 20% 8%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 240 15% 15%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 240 15% 18%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-background: 258 25% 8%;
+    --sidebar-foreground: 48 60% 96%;
+    --sidebar-primary: 43 96% 56%;
+    --sidebar-primary-foreground: 258 28% 8%;
+    --sidebar-accent: 258 20% 16%;
+    --sidebar-accent-foreground: 48 60% 96%;
+    --sidebar-border: 258 20% 20%;
+    --sidebar-ring: 43 96% 56%;
   }
 
   /* Light mode - keeping dark for gaming aesthetic */
@@ -88,7 +88,7 @@
     --primary: 217 91% 50%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 263 70% 50%;
+    --secondary: 350 80% 45%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96%;
@@ -126,20 +126,21 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-size: 1rem;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-wide;
+    @apply font-display font-bold tracking-tight;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   .font-body {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .text-gradient {
@@ -219,10 +220,10 @@
   }
 
   .trophy-shimmer {
-    background: linear-gradient(90deg, 
-      hsl(45, 93%, 58%) 0%, 
-      hsl(45, 100%, 75%) 50%, 
-      hsl(45, 93%, 58%) 100%
+    background: linear-gradient(90deg,
+      hsl(43, 96%, 52%) 0%,
+      hsl(48, 100%, 78%) 50%,
+      hsl(43, 96%, 52%) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -239,6 +240,76 @@
 
   .pulse-live {
     animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Hero — deep navy base */
+  .hero-bg {
+    background: hsl(228, 35%, 5%);
+  }
+
+  /* Hexagon grid overlay */
+  .hex-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='86'%3E%3Cpolygon points='25,2 48,14 48,38 25,50 2,38 2,14' fill='none' stroke='rgba(180%2C120%2C255%2C0.09)' stroke-width='1'/%3E%3Cpolygon points='0,50 23,62 23,86 0,98 -23,86 -23,62' fill='none' stroke='rgba(180%2C120%2C255%2C0.09)' stroke-width='1'/%3E%3Cpolygon points='50,50 73,62 73,86 50,98 27,86 27,62' fill='none' stroke='rgba(180%2C120%2C255%2C0.09)' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 50px 86px;
+  }
+
+  /* Radial pulse from center */
+  @keyframes radial-pulse {
+    0%, 100% { opacity: 0.18; transform: scale(1); }
+    50%       { opacity: 0.38; transform: scale(1.25); }
+  }
+  .radial-pulse {
+    background: radial-gradient(ellipse at 50% 55%,
+      hsl(278, 72%, 35%, 0.5) 0%,
+      hsl(43, 96%, 30%, 0.2) 40%,
+      transparent 70%
+    );
+    animation: radial-pulse 7s ease-in-out infinite;
+  }
+
+  /* Confetti fall */
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-60px) rotate(0deg) scaleX(1);    opacity: 0; }
+    5%   { opacity: 1; }
+    90%  { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(var(--spin)) scaleX(var(--flip)); opacity: 0; }
+  }
+  .confetti-piece {
+    position: absolute;
+    top: -30px;
+    animation: confetti-fall linear infinite;
+    pointer-events: none;
+  }
+
+  /* Slow rising embers */
+  @keyframes ember-rise {
+    0%   { transform: translateY(0) translateX(0) scale(1);        opacity: 0;    }
+    8%   { opacity: 0.8; }
+    50%  { transform: translateY(-45%) translateX(var(--drift)) scale(0.8); opacity: 0.5; }
+    100% { transform: translateY(-100%) translateX(var(--drift2)) scale(0.3); opacity: 0; }
+  }
+  .ember {
+    position: absolute;
+    border-radius: 50%;
+    animation: ember-rise ease-in-out infinite;
+    pointer-events: none;
+    filter: blur(0.5px);
+  }
+
+  /* Rising gold particles */
+  @keyframes particle-rise {
+    0%   { transform: translateY(0) translateX(0) scale(1);   opacity: 0;   }
+    8%   { opacity: 0.7; }
+    85%  { opacity: 0.25; }
+    100% { transform: translateY(-95vh) translateX(var(--drift)) scale(0.4); opacity: 0; }
+  }
+  .gold-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: hsl(45, 93%, 62%);
+    box-shadow: 0 0 6px hsl(45, 93%, 62%, 0.6);
+    animation: particle-rise linear infinite;
+    pointer-events: none;
   }
 
   /* Floating orb animations */
@@ -274,7 +345,7 @@
   }
   .neon-sweep-line {
     height: 2px;
-    background: linear-gradient(90deg, transparent 0%, hsl(217,91%,60%) 40%, hsl(263,70%,50%) 60%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(43,96%,56%) 40%, hsl(278,72%,52%) 60%, transparent 100%);
     background-size: 200% auto;
     animation: neon-sweep 3s linear infinite;
     border-radius: 2px;
@@ -327,6 +398,119 @@
   .dance-b { animation: dance-sway     0.9s ease-in-out infinite 0.2s; }
   .dance-c { animation: dance-spin-hop 0.7s ease-in-out infinite 0.1s; }
   .dance-d { animation: dance-wiggle   1.0s ease-in-out infinite 0.35s; }
+
+  /* Sneaky goblin peek animation */
+  @keyframes goblin-sneak {
+    0%   { transform: translateY(0px) rotate(-3deg) scaleX(1); }
+    20%  { transform: translateY(-4px) rotate(3deg) scaleX(0.95); }
+    40%  { transform: translateY(-2px) rotate(-2deg) scaleX(1.05); }
+    60%  { transform: translateY(-6px) rotate(4deg) scaleX(0.97); }
+    80%  { transform: translateY(-3px) rotate(-3deg) scaleX(1.02); }
+    100% { transform: translateY(0px) rotate(-3deg) scaleX(1); }
+  }
+
+  .sneaky-goblin {
+    animation: goblin-sneak 1.4s ease-in-out infinite;
+    transform-origin: bottom center;
+    image-rendering: pixelated;
+  }
+
+  /* Fade-up on scroll entry */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+  .fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+  /* Fire particles */
+  @keyframes fire-rise {
+    0%   { transform: translateY(0) scaleX(1) rotate(0deg);   opacity: 0.9; }
+    40%  { transform: translateY(-35px) scaleX(0.75) rotate(4deg);  opacity: 0.7; }
+    70%  { transform: translateY(-60px) scaleX(0.5) rotate(-6deg); opacity: 0.35; }
+    100% { transform: translateY(-90px) scaleX(0.2) rotate(3deg);  opacity: 0; }
+  }
+  .fire-particle {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50% 50% 20% 20%;
+    animation: fire-rise ease-out infinite;
+    pointer-events: none;
+    filter: blur(1px);
+  }
+
+  /* Lightning bolt flicker */
+  @keyframes lightning-flash {
+    0%, 100% { opacity: 0; }
+    4%  { opacity: 1; }
+    8%  { opacity: 0; }
+    12% { opacity: 0.8; }
+    16% { opacity: 0; }
+    60% { opacity: 0; }
+    64% { opacity: 0.9; }
+    68% { opacity: 0; }
+    72% { opacity: 0.6; }
+    76% { opacity: 0; }
+  }
+  @keyframes lightning-flash-b {
+    0%, 100% { opacity: 0; }
+    20% { opacity: 0; }
+    24% { opacity: 1; }
+    28% { opacity: 0; }
+    32% { opacity: 0.7; }
+    36% { opacity: 0; }
+    80% { opacity: 0; }
+    84% { opacity: 0.9; }
+    88% { opacity: 0; }
+  }
+  .lightning-a { animation: lightning-flash   4s ease-in-out infinite; }
+  .lightning-b { animation: lightning-flash-b 5s ease-in-out infinite; }
+  .lightning-c { animation: lightning-flash   3.5s ease-in-out infinite 1.2s; }
+  .lightning-d { animation: lightning-flash-b 6s ease-in-out infinite 0.8s; }
+
+  /* Gold border pulse for #1 */
+  @keyframes gold-border-pulse {
+    0%, 100% { box-shadow: 0 0 20px hsl(43,96%,56%,0.4), 0 0 60px hsl(43,96%,56%,0.15), inset 0 0 20px hsl(43,96%,56%,0.05); }
+    50%       { box-shadow: 0 0 40px hsl(43,96%,56%,0.7), 0 0 100px hsl(43,96%,56%,0.3), inset 0 0 30px hsl(43,96%,56%,0.1); }
+  }
+  .gold-pulse { animation: gold-border-pulse 2.5s ease-in-out infinite; }
+
+  /* Rotating gradient ring */
+  @keyframes rotate-ring {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .rotate-ring { animation: rotate-ring 4s linear infinite; }
+
+  /* Crown bounce for #1 player */
+  @keyframes crown-bounce {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    40%       { transform: translateY(-8px) rotate(5deg); }
+    70%       { transform: translateY(-4px) rotate(-3deg); }
+  }
+  .crown-bounce { animation: crown-bounce 2s ease-in-out infinite; }
+
+  /* Falling cards hero background */
+  @keyframes card-fall {
+    0%   { transform: translateY(-120px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+  .card-fall {
+    position: absolute;
+    width: 32px;
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, hsl(217,91%,60%,0.15), hsl(350,80%,45%,0.15));
+    border: 1px solid hsl(217,91%,60%,0.2);
+    animation: card-fall linear infinite;
+    pointer-events: none;
+  }
 
   /* Scrollbar styling */
   ::-webkit-scrollbar {
