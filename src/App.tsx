@@ -16,8 +16,17 @@ import { AuthProvider } from "@/contexts/AuthContext";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import Players from "./pages/Players";
+import PlayerDetail from "./pages/PlayerDetail";
+import Analytics from "./pages/Analytics";
+import WarReadiness from "./pages/WarReadiness";
+import Tournaments from "./pages/Tournaments";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 2, staleTime: 30_000 } },
+});
 
 const App = () => {
   return (
