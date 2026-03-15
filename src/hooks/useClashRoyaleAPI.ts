@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 const CR_API_BASE = import.meta.env.VITE_CR_API_BASE ?? '/api/cr';
-const CR_API_KEY  = import.meta.env.VITE_CR_API_KEY  ?? '';
+const CR_API_KEY  = ''; // key is server-side only (CR_API_KEY in Vercel env, not exposed to browser)
 const CLAN_TAG    = import.meta.env.VITE_CR_CLAN_TAG ?? '%23QUP9LUYJ';
 
 // ─── Types ────────────────────────────────────────────────────────────────────

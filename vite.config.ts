@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
       // This bypasses CORS in local dev — in production point VITE_CR_API_BASE
       // at your own server-side proxy (e.g. a Cloudflare Worker or small Express app).
       '/api/cr': {
-        target: 'https://api.clashroyale.com/v1',
+        target: 'https://proxy.royaleapi.dev/v1',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/cr/, ''),
         secure: true,
