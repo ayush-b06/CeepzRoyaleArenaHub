@@ -4,7 +4,7 @@ const CR_API_KEY = process.env.CR_API_KEY ?? '';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const segments = Array.isArray(req.query.path) ? req.query.path : [req.query.path ?? ''];
-  const path = segments.map(encodeURIComponent).join('/');
+  const path = segments.join('/');
 
   const upstream = `https://proxy.royaleapi.dev/v1/${path}`;
 
