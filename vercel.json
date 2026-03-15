@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/cr/(.*)", "destination": "/api/cr/[...path]" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
