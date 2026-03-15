@@ -78,7 +78,7 @@ export function PlayerCard({ player, rank }: PlayerCardProps) {
           <div className="text-right">
             <div className="flex items-center gap-1.5 trophy-shimmer">
               <Trophy className="h-5 w-5" />
-              <span className="font-display font-bold text-xl">{player.trophies?.toLocaleString()}</span>
+              <span className="font-display font-bold text-lg">{player.trophies?.toLocaleString()}</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Best: {player.best_trophies?.toLocaleString()}
