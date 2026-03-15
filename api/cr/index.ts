@@ -3,13 +3,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const CR_API_KEY = process.env.CR_API_KEY ?? '';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const segments = Array.isArray(req.query.path) ? req.query.path : [req.query.path ?? ''];
-  const path = segments.join('/');
-
-  // Debug: return the constructed URL
-  if (req.query.debug === '1') {
-    return res.status(200).json({ path, segments, upstream: `https://proxy.royaleapi.dev/v1/${path}` });
-  }
+  const prefix = '/api/cr/';
+  const fullPath = req.url ?? '';
+  const idx = fullPath.indexOf(prefix);
+  const path = idx !== -1 ? fullPath.slice(idx + prefix.length).split('?')[0] : '';
 
   const upstream = `https://proxy.royaleapi.dev/v1/${path}`;
 
