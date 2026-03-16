@@ -188,10 +188,10 @@ function Navbar({ memberCount }: { memberCount?: number }) {
             </span>
           )}
           <Link
-            to="/dashboard"
+            to="/live-chat"
             className="hidden md:inline-flex items-center gap-1.5 rounded-lg bg-primary/10 border border-primary/30 px-3 py-1.5 text-sm text-primary hover:bg-primary/20 transition-colors"
           >
-            Dashboard <ChevronRight className="h-3.5 w-3.5" />
+            Live Chat <ChevronRight className="h-3.5 w-3.5" />
           </Link>
           {/* Mobile burger */}
           <button
@@ -218,11 +218,11 @@ function Navbar({ memberCount }: { memberCount?: number }) {
             </a>
           ))}
           <Link
-            to="/dashboard"
+            to="/live-chat"
             className="block rounded-lg px-3 py-2 text-sm text-primary hover:bg-primary/10 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
-            Dashboard →
+            Live Chat →
           </Link>
           <a
             href="https://discord.gg/QuxsNvHpjh"
@@ -1487,8 +1487,8 @@ function Footer({ clanTag }: { clanTag: string }) {
             <h4 className="font-display font-bold text-sm mb-3 uppercase tracking-wider">Internal</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/dashboard" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-                  <ExternalLink className="h-3.5 w-3.5" /> Dashboard
+                <Link to="/live-chat" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
+                  <ExternalLink className="h-3.5 w-3.5" /> Live Chat
                 </Link>
               </li>
               <li>

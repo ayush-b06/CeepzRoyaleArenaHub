@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
+import LiveChat from "./pages/LiveChat";
 import Players from "./pages/Players";
 import PlayerDetail from "./pages/PlayerDetail";
 import Analytics from "./pages/Analytics";
@@ -30,7 +30,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Auth />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/live-chat" element={<LiveChat />} />
               <Route path="/players" element={<Players />} />
               <Route path="/players/:id" element={<PlayerDetail />} />
               <Route path="/analytics" element={<Analytics />} />

@@ -1,12 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Trophy, 
-  Swords, 
-  Shield,
+import {
+  MessageSquare,
   Settings,
   LogOut,
   Crown
@@ -14,11 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Players', href: '/players', icon: Users },
-  { name: 'Team Analytics', href: '/analytics', icon: Trophy },
-  { name: 'War Readiness', href: '/war', icon: Shield },
-  { name: 'Tournaments', href: '/tournaments', icon: Swords },
+  { name: 'Live Chat', href: '/live-chat', icon: MessageSquare },
 ];
 
 const adminNavigation = [
