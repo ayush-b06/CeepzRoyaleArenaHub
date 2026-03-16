@@ -96,6 +96,20 @@ export interface CRRaceLog {
   items: CRRaceLogEntry[];
 }
 
+export interface CRPoLSeasonResult {
+  leagueNumber: number; // 0=Challenger I … 8=Ultimate Champion
+  trophies: number;     // PoL rating/medals within the league
+  rank?: number;        // global rank — only present for Ultimate Champion
+}
+
+export interface CRPlayerProfile {
+  tag: string;
+  name: string;
+  bestPathOfLegendSeasonResult?: CRPoLSeasonResult;
+  lastPathOfLegendSeasonResult?: CRPoLSeasonResult;
+  currentPathOfLegendSeasonResult?: CRPoLSeasonResult;
+}
+
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
 
 async function crFetch<T>(path: string): Promise<T> {
@@ -146,6 +160,31 @@ export function useCurrentRiverRace() {
     refetchInterval: 60_000,
     staleTime: 30_000,
     retry: 2,
+  });
+}
+
+/**
+ * Fetches individual player profiles for a list of tags in parallel.
+ * Used to retrieve Path of Legend season results per member.
+ * Refreshes every 5 min — PoL data changes slowly.
+ */
+export function useClanMembersPoL(memberTags: string[]) {
+  return useQuery<CRPlayerProfile[], Error>({
+    queryKey: ['cr-members-pol', memberTags.join(',')],
+    queryFn: async () => {
+      const results = await Promise.allSettled(
+        memberTags.map((tag) =>
+          crFetch<CRPlayerProfile>(`/players/${encodeURIComponent(tag)}`)
+        )
+      );
+      return results
+        .filter((r): r is PromiseFulfilledResult<CRPlayerProfile> => r.status === 'fulfilled')
+        .map((r) => r.value);
+    },
+    enabled: memberTags.length > 0,
+    staleTime: 300_000,
+    refetchInterval: 300_000,
+    retry: 1,
   });
 }
 
