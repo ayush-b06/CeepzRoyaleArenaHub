@@ -487,6 +487,9 @@ function RosterSection({
   const [sortKey, setSortKey] = useState<SortKey>('clanRank');
   const [sortAsc, setSortAsc] = useState(true);
   const [roleFilter, setRole] = useState<string>('all');
+  const [showAll, setShowAll] = useState(false);
+
+  const PREVIEW_COUNT = 12;
 
   const sorted = (members ?? [])
     .filter((m) => {
@@ -589,7 +592,7 @@ function RosterSection({
         {/* Card Grid */}
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {Array.from({ length: PREVIEW_COUNT }).map((_, i) => (
               <Skeleton key={i} className="h-36 w-full" />
             ))}
           </div>
@@ -598,42 +601,56 @@ function RosterSection({
             No members match your filters.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {sorted.map((m, idx) => {
-              const trophyBorder = (m.trophies ?? 0) >= 7000 ? 'border-amber-500/50 shadow-[0_0_12px_hsl(45,93%,58%,0.2)]' :
-                                   (m.trophies ?? 0) >= 5000 ? 'border-primary/50' :
-                                   (m.trophies ?? 0) >= 3000 ? 'border-red-500/40' : 'border-border';
-              return (
-                <div key={m.tag} className={`stat-card border ${trophyBorder} flex flex-col gap-2`}>
-                  <div className="flex items-center gap-3">
-                    {/* Rank + avatar placeholder */}
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-display font-black text-sm border-2 ${trophyBorder} bg-muted`}>
-                      {idx + 1}
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {(showAll ? sorted : sorted.slice(0, PREVIEW_COUNT)).map((m, idx) => {
+                const trophyBorder = (m.trophies ?? 0) >= 7000 ? 'border-amber-500/50 shadow-[0_0_12px_hsl(45,93%,58%,0.2)]' :
+                                     (m.trophies ?? 0) >= 5000 ? 'border-primary/50' :
+                                     (m.trophies ?? 0) >= 3000 ? 'border-red-500/40' : 'border-border';
+                return (
+                  <div key={m.tag} className={`stat-card border ${trophyBorder} flex flex-col gap-2`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-display font-black text-sm border-2 ${trophyBorder} bg-muted`}>
+                        {idx + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-display font-bold text-sm truncate">{m.name}</div>
+                        <div className="text-[11px] text-muted-foreground">{m.tag}</div>
+                      </div>
+                      <RoleBadge role={m.role} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-display font-bold text-sm truncate">{m.name}</div>
-                      <div className="text-[11px] text-muted-foreground">{m.tag}</div>
+                    <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1 border-t border-border/50">
+                      <div>
+                        <div className="trophy-shimmer font-display font-bold">{(m.trophies ?? 0).toLocaleString()}</div>
+                        <div className="text-muted-foreground">Trophies</div>
+                      </div>
+                      <div>
+                        <div className="text-green-400 font-display font-bold">{(m.donations ?? 0).toLocaleString()}</div>
+                        <div className="text-muted-foreground">Donated</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground font-medium">{formatLastSeen(m.lastSeen)}</div>
+                        <div className="text-muted-foreground">Online</div>
+                      </div>
                     </div>
-                    <RoleBadge role={m.role} />
                   </div>
-                  <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1 border-t border-border/50">
-                    <div>
-                      <div className="trophy-shimmer font-display font-bold">{(m.trophies ?? 0).toLocaleString()}</div>
-                      <div className="text-muted-foreground">Trophies</div>
-                    </div>
-                    <div>
-                      <div className="text-green-400 font-display font-bold">{(m.donations ?? 0).toLocaleString()}</div>
-                      <div className="text-muted-foreground">Donated</div>
-                    </div>
-                    <div>
-                      <div className="text-muted-foreground font-medium">{formatLastSeen(m.lastSeen)}</div>
-                      <div className="text-muted-foreground">Online</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+
+            {sorted.length > PREVIEW_COUNT && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowAll((v) => !v)}
+                  className="rounded-xl border border-border bg-muted px-6 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                >
+                  {showAll
+                    ? 'Show less'
+                    : `View all ${sorted.length} members`}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
